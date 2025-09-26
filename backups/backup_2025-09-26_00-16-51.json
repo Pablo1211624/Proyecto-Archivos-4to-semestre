@@ -1,0 +1,20 @@
+[
+    {
+        "Nombre": "Pablo",
+        "Carnet": 28,
+        "Carrera": "Sistemas",
+        "Edad": 19
+    },
+    {
+        "Nombre": "Pablo",
+        "Carnet": 28,
+        "Carrera": "Sistemas",
+        "Edad": 19
+    },
+    {
+        "Nombre": "Pedro",
+        "Carnet": 12,
+        "Carrera": "Ing",
+        "Edad": 33
+    }
+]
