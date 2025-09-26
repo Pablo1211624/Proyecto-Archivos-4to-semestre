@@ -86,10 +86,14 @@ for indice, estudiante in enumerate(Estudiantes_data):
         if indice not in indice_invertido[texto]:
             indice_invertido[texto].append(indice)
 
-def Busqueda_indice_invertido(busqueda:str):
-    print(f"Buscar {busqueda} en el diccionario invertido: ")
-    for f in indice_invertido[busqueda]:
-        print("-", f)
+def Busqueda_indice_invertido():
+    with open("indices.txt","r") as indices_Archivo:
+        for linea in indices_Archivo:
+            indices = linea.strip().split(",")
+            for i in range(len(indices)):
+                print(f"Buscar {indices[i]} en el diccionario invertido: ")
+                for f in indice_invertido[indices[i]]:
+                    print("-", f)
 
 indice_id = {i["Carnet"]: i for i in Estudiantes_data}
 indice_Nombre = {n["Nombre"]: n for n in Estudiantes_data}
@@ -177,7 +181,7 @@ while True:
     print("3. Buscar estudiante por ID")
     print("4. Buscar estudiante por nombre")
     print("5. Buscar estudiante por correo")
-    print("6. Buscar en índice invertido")
+    print("6. Buscar en índice invertido con archivo auxiliar")
     print("7. Realizar backup de datos")
     print("8. Mostrar metadatos de archivos")
     print("9. Salir")
@@ -217,8 +221,7 @@ while True:
     elif opc=="6":
         if Estudiantes_data:
             print("Busqueda por indice invertido\n")
-            palabra = input("Ingrese la palabra que desea buscar: ")
-            print(f"\nBusqueda por indice invertido: {Busqueda_indice_invertido(palabra)}")
+            print(f"\nBusqueda por indice invertido: {Busqueda_indice_invertido()}")
         else:
             print("No hay ningun estudiante")
     elif opc=="7":
