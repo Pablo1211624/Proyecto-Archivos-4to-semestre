@@ -1,1 +1,0 @@
-Accion Alta, estudiante: {'Nombre': 'Pablo', 'Carnet': 28, 'Carrera': 'Sistemas', 'Edad': 19}Accion Alta, estudiante: {'Nombre': 'Pablo', 'Carnet': 28, 'Carrera': 'Sistemas', 'Edad': 19}Accion Alta, estudiante: {'Nombre': 'Pedro', 'Carnet': 12, 'Carrera': 'Ing', 'Edad': 33}
