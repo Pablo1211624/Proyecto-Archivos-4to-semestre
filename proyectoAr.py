@@ -62,14 +62,15 @@ def Guardar_Historial():
         for h in Historial:
             archivoH.write(f"Accion {h['Accion']}, estudiante: {h['Estudiante']}")
 
+CargarEstudiantes()
 def BusquedaSecuencia(id_Estudiante:int):
     encontrado = False
     while encontrado == False:
         with open("estudiantes.csv","r") as Buscardor:
-            for linea in Buscardor:
-                datos = linea.strip().split(";")
-                if id_Estudiante == datos[1]:
-                    print(f"Estudiante: {datos[0]} / {datos[2]} / {datos[3]}, encontrado")
+            lector = csv.DictReader(Buscardor, delimiter=";")
+            for linea in lector:
+                if id_Estudiante == int(linea['Carnet']):
+                    print(f"Estudiante: {linea['Nombre']} / {linea['Carrera']} / {linea['Edad']}, encontrado")
                     encontrado=True
                     break
         
@@ -81,7 +82,7 @@ from collections import defaultdict
 indice_invertido = defaultdict(list)
 
 for indice, estudiante in enumerate(Estudiantes_data):
-    texto_competo = f"{estudiante["Nombre"]} {estudiante["Carnet"]} {estudiante["Carrera"]} {estudiante["Edad"]}"
+    texto_competo = f"{estudiante['Nombre']} {estudiante['Carnet']} {estudiante['Carrera']} {estudiante['Edad']}"
     for texto in texto_competo.split():
         if indice not in indice_invertido[texto]:
             indice_invertido[texto].append(indice)
@@ -90,14 +91,15 @@ def Busqueda_indice_invertido():
     with open("indices.txt","r") as indices_Archivo:
         for linea in indices_Archivo:
             indices = linea.strip().split(",")
-            for i in range(len(indices)):
-                print(f"Buscar {indices[i]} en el diccionario invertido: ")
-                for f in indice_invertido[indices[i]]:
-                    print("-", f)
+            for palabra in indices:
+                if palabra in indice_invertido:
+                    print(f"Buscar {palabra} en el diccionario invertido: ")
+                    for f in indice_invertido[palabra]:
+                        print("-", f)
 
-indice_id = {i["Carnet"]: i for i in Estudiantes_data}
+indice_id = {int(i["Carnet"]): i for i in Estudiantes_data}
 indice_Nombre = {n["Nombre"]: n for n in Estudiantes_data}
-indice_Correo = {c["Correo"]: c for c in Estudiantes_data}
+indice_Correo = {c["Carrera"]: c for c in Estudiantes_data}
 
 def BusquedaporId(id:int):
     print(f"Busqueda por Carnet: {indice_id[id]}")
@@ -105,8 +107,8 @@ def BusquedaporId(id:int):
 def BusquedaporNombre(Nombre:str):
     print(f"Busqueda por Nombre: {indice_Nombre[Nombre]}")
 
-def BusquedaporCorreo(Correo:str):
-    print(f"Busqueda por Correo: {indice_Correo[Correo]}")
+def BusquedaporCarrera(Carrera:str):
+    print(f"Busqueda por Carrera: {indice_Correo[Carrera]}")
 
 tamano = 50
 tabla_hash = [None] * tamano
@@ -172,7 +174,6 @@ def Metadatos():
     print("Escritura", bool(permisoscsv & stat.S_IWUSR))
     print("Ejecucion", bool(permisoscsv&stat.S_IXUSR), "\n")
     
-CargarEstudiantes()
 while True:
     EstudiantesCargados = False
     print("\n***** MENÚ PRINCIPAL *****")
@@ -201,21 +202,24 @@ while True:
     elif opc == "3":
         if Estudiantes_data:
             carnet = int(input("Ingrese el carnet que desea buscar: "))
-            print(f"\nBusqueda por indice multiple: {BusquedaporId(carnet)}")
-            print(f"\nBusqueda por hash: {BusquedaHash(carnet)}")
+            print("Busqueda por id multiple: \n")
+            BusquedaporId(carnet)
+            print("Busqueda por id hash: \n")
+            print(f"{BusquedaHash(carnet)}\n")
+            print("Busqueda por id secuencia: \n")
             print(f"\nBusqueda por secuencia: {BusquedaSecuencia(carnet)}")
         else:
             print("No hay ningun estudiante")
     elif opc == "4":
         if Estudiantes_data:
             Nombre = input("Ingrese el nombre que desea buscar: ")
-            print(f"\nBusqueda por indice multiple: {BusquedaporNombre(Nombre)}")
+            BusquedaporNombre(Nombre)
         else:
             print("No hay ningun estudiante")
     elif opc=="5":
         if Estudiantes_data:
-            Correo = input("Ingrese el correo que desea buscar: ")
-            print(f"\nBusqueda por indice multiple: {BusquedaporCorreo(Correo)}")
+            Carrera = input("Ingrese la carrera que desea buscar: ")
+            BusquedaporCarrera(Carrera)
         else:
             print("No hay ningun estudiante")
     elif opc=="6":
